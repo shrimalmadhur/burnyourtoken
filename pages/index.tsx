@@ -1,12 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import dynamic from "next/dynamic";
 import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import BurnPage from '../components/BurnPage'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+function Home() {
   return (
     <>
       <Head>
@@ -21,3 +22,5 @@ export default function Home() {
     </>
   )
 }
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });
