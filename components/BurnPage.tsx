@@ -1,0 +1,68 @@
+
+import { FC, useContext, useEffect, useRef, useState } from 'react';
+import axios from "axios";
+import React from 'react'
+import { init, useConnectWallet } from '@web3-onboard/react'
+import injectedModule from '@web3-onboard/injected-wallets'
+import { ethers } from 'ethers'
+import ListAllNFT from './ListAllNFT';
+
+const rpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_MAINNET_URL || ""
+const goerliRpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_GOERLI_URL || ""
+
+const injected = injectedModule();
+
+// initialize Onboard
+init({
+  wallets: [injected],
+  chains: [
+    {
+      id: '0x1',
+      token: 'ETH',
+      label: 'Ethereum Mainnet',
+      rpcUrl
+    },
+    {
+      id: '0x5',
+      token: 'ETH',
+      label: 'Ethereum Goerli',
+      rpcUrl: goerliRpcUrl
+    }
+  ],
+  appMetadata: {
+    name: "BurnToken",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="#fc3003" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" /></svg>',
+    description: "Burn your Tokens"
+  }
+})
+
+const BurnPage: FC = () => {
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  // const [address, setAddress] = useState("")
+
+  // if (wallet) {
+  //   setAddress(wallet.accounts[0].address)
+  // }
+
+  return (
+    <div className='w-screen px-4 flex flex-col'>
+      <div className="flex mx-auto">
+        <button className="mt-4 px-2 w-32 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          disabled={connecting}
+          onClick={() => (wallet ? disconnect(wallet) : connect())}
+        >
+          {connecting ? 'Connecting' : wallet ? 'Disconnect' : 'Connect Wallet'}
+        </button>
+      </div>
+
+      {wallet ?
+        <div className="w-full flex flex-col mx-auto">
+          <div>Token List (ERC721 Tokens only)</div>
+          <div className='w-full'><ListAllNFT wallet={wallet}></ListAllNFT></div>
+        </div>
+        : <div className="mt-4 flex text-2xl">Connect your wallet to see token data</div>}
+    </div>
+  )
+}
+
+export default BurnPage
