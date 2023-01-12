@@ -1,13 +1,11 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import dynamic from "next/dynamic";
-import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import BurnPage from '../components/BurnPage'
 
-const inter = Inter({ subsets: ['latin'] })
+import { FC } from 'react';
 
-function Home() {
+const Home: FC = () => {
   return (
     <>
       <Head>

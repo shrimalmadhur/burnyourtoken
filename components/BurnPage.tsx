@@ -1,10 +1,7 @@
-
-import { FC, useContext, useEffect, useRef, useState } from 'react';
-import axios from "axios";
+import { FC } from 'react';
 import React from 'react'
 import { init, useConnectWallet } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
-import { ethers } from 'ethers'
 import ListAllNFT from './ListAllNFT';
 
 const rpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_MAINNET_URL || ""
