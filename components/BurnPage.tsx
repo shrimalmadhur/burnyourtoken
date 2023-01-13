@@ -54,7 +54,7 @@ const BurnPage: FC = () => {
 
       {wallet ?
         <div className="w-full flex flex-col mx-auto">
-          <div>Token List (ERC721 Tokens only)</div>
+          <div>Token List</div>
           <div className='w-full'><ListAllNFT wallet={wallet}></ListAllNFT></div>
         </div>
         : <div className="mt-4 flex text-2xl">Connect your wallet to see token data</div>}
