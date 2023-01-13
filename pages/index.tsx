@@ -15,6 +15,7 @@ const Home: FC = () => {
         <link rel="icon" href="/next.svg" />
       </Head>
       <main className={styles.main}>
+        <div className='bold'>Annoyed of spam tokens filling up your wallet? Let's burn them. </div>
         <BurnPage></BurnPage>
       </main>
     </>
