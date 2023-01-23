@@ -3,6 +3,8 @@ import React from 'react'
 import { init, useConnectWallet } from '@web3-onboard/react'
 import injectedModule from '@web3-onboard/injected-wallets'
 import ListAllNFT from './ListAllNFT';
+import { Tabs } from 'flowbite-react';
+import ListAllERC20 from './ListAllERC20';
 
 const rpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_MAINNET_URL || ""
 const goerliRpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_GOERLI_URL || ""
@@ -55,7 +57,17 @@ const BurnPage: FC = () => {
       {wallet ?
         <div className="w-full flex flex-col mx-auto">
           <div className="mt-4 text-2xl text-center">Token List</div>
-          <div className='w-full'><ListAllNFT wallet={wallet}></ListAllNFT></div>
+          <Tabs.Group
+            aria-label="Tabs with underline"
+            style="pills"
+          >
+            <Tabs.Item title="NFT" active={true}>
+              <div className='w-full'><ListAllNFT wallet={wallet}></ListAllNFT></div>
+            </Tabs.Item>
+            <Tabs.Item title="ERC20 Tokens">
+              <div className='w-full'><ListAllERC20 wallet={wallet}></ListAllERC20></div>
+            </Tabs.Item>
+          </Tabs.Group>  
         </div>
         : <div className="mt-4 text-2xl text-center">Connect your wallet to see token data</div>}
     </div>

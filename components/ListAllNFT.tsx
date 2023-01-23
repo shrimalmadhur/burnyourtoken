@@ -34,6 +34,7 @@ const ListAllNFT: FC<Props> = (data) => {
 
     const signer = ethersProvider.getSigner(data.wallet.accounts[0].address);
 
+    // explore https://github.com/alephao/erc721-batch-transfer for batch transfer
     try {
       let nftContract;
       if (token.tokenType === NftTokenType.ERC721) {
@@ -54,7 +55,7 @@ const ListAllNFT: FC<Props> = (data) => {
   }
 
   useEffect(() => {
-    axios.get('/api/v1/' + chainType + '/' + address)
+    axios.get('/api/v1/' + chainType + '/nft/' + address)
       .then(response => {
         setNftData(response.data)
       })

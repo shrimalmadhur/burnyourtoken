@@ -1,11 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Network, Alchemy, AlchemySettings } from 'alchemy-sdk'
-import { TokenResponse } from '../../../../types'
-
-type Data = {
-  names: TokenResponse[]
-}
+import { TokenResponse, ERC20TokenResponse } from '../../../../../types'
 
 const alchemyAPIKey = process.env.NEXT_ALCHEMY_API_KEY || ""
 const goerliAlchemyAPIKey = process.env.NEXT_GOERLI_ALCHEMY_API_KEY || ""
@@ -13,7 +9,7 @@ const goerliAlchemyAPIKey = process.env.NEXT_GOERLI_ALCHEMY_API_KEY || ""
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<TokenResponse[]>
+  res: NextApiResponse<ERC20TokenResponse[]>
 ) {
 
   const settingsMap = {
@@ -36,21 +32,23 @@ export default async function handler(
   
     const alchemy = new Alchemy(settings);
 
-    const nfts = await alchemy.nft.getNftsForOwner(req.query.address);
-    const ownedNFT = nfts.ownedNfts
-    const nftNames: TokenResponse[] = []
-    ownedNFT.forEach(element => {
-      const nftData = {
-        name: element.title,
-        contractAddress: element.contract.address,
-        tokenId: element.tokenId,
-        tokenType: element.tokenType,
-        thumbnailUrl: element.media[0]?.thumbnail,
-        rawImageUrl: element.rawMetadata?.image
+    const tokens = await alchemy.core.getTokenBalances(req.query.address)
+    const ownedTokens = tokens.tokenBalances
+    const tokensData: ERC20TokenResponse[] = await Promise.all(ownedTokens.map(async element => {
+      const tokenData = {
+        name: element.contractAddress,
+        contractAddress: element.contractAddress,
+        tokenBalance: element.tokenBalance || "",
+        decimals: 18,
+        symbol: ""
       }
-      nftNames.push(nftData)
-    });
-    res.status(200).json(nftNames)
+      const metadata = await alchemy.core.getTokenMetadata(element.contractAddress);
+      tokenData.name = metadata.name || "";
+      tokenData.decimals = metadata.decimals || 0;
+      tokenData.symbol = metadata.symbol || ""
+      return tokenData
+    }));
+    res.status(200).json(tokensData)
   } else {
     res.status(500)
   }
