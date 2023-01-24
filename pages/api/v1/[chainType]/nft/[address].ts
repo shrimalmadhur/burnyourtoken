@@ -9,6 +9,7 @@ type Data = {
 
 const alchemyAPIKey = process.env.NEXT_ALCHEMY_API_KEY || ""
 const goerliAlchemyAPIKey = process.env.NEXT_GOERLI_ALCHEMY_API_KEY || ""
+const polygonMumbaiAlchemyAPIKey = process.env.NEXT_POLYGON_MUMBAI_ALCHEMY_API_KEY || ""
 
 
 export default async function handler(
@@ -24,14 +25,21 @@ export default async function handler(
     goerli: {
       apiKey: goerliAlchemyAPIKey, // Replace with your Alchemy API Key.
       network: Network.ETH_GOERLI, // Replace with your network.
+    }, 
+    mumbai: {
+      apiKey: polygonMumbaiAlchemyAPIKey, // Replace with your Alchemy API Key.
+      network: Network.MATIC_MUMBAI, // Replace with your network.
     }
   }
 
   if (typeof req.query.address === 'string' && typeof req.query.chainType === 'string') {
     // Optional Config object, but defaults to demo api-key and eth-mainnet.
     let settings: AlchemySettings = settingsMap.mainnet;
-    if (req.query.chainType === 'goerli') {
+    const chainType = req.query.chainType;
+    if (chainType === 'goerli') {
       settings = settingsMap.goerli;
+    } else if (chainType === 'mumbai') {
+      settings = settingsMap.mumbai
     }
   
     const alchemy = new Alchemy(settings);
