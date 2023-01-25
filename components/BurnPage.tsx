@@ -9,6 +9,7 @@ import ListAllERC20 from './ListAllERC20';
 const rpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_MAINNET_URL || ""
 const goerliRpcUrl = process.env.NEXT_PUBLIC_ETHEREUM_GOERLI_URL || ""
 const polygonMumbaiURL = process.env.NEXT_PUBLIC_POLYGON_MUMBAI_URL || ""
+const polygonMainnetURL = process.env.NEXT_PUBLIC_POLYGON_MAINNET_URL || ""
 
 const injected = injectedModule();
 
@@ -32,6 +33,12 @@ init({
       id: '0x13881',
       token: 'MATIC',
       label: 'Polygon Mumbai',
+      rpcUrl : polygonMumbaiURL
+    },
+    {
+      id: '0x89',
+      token: 'MATIC',
+      label: 'Polygon Mainnet',
       rpcUrl : polygonMumbaiURL
     }
   ],

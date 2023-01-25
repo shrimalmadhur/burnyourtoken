@@ -10,7 +10,7 @@ type Data = {
 const alchemyAPIKey = process.env.NEXT_ALCHEMY_API_KEY || ""
 const goerliAlchemyAPIKey = process.env.NEXT_GOERLI_ALCHEMY_API_KEY || ""
 const polygonMumbaiAlchemyAPIKey = process.env.NEXT_POLYGON_MUMBAI_ALCHEMY_API_KEY || ""
-
+const polygonMainnetAlchemyAPIKey = process.env.NEXT_POLYGON_MAINNET_ALCHEMY_API_KEY || ""
 
 export default async function handler(
   req: NextApiRequest,
@@ -29,6 +29,10 @@ export default async function handler(
     mumbai: {
       apiKey: polygonMumbaiAlchemyAPIKey, // Replace with your Alchemy API Key.
       network: Network.MATIC_MUMBAI, // Replace with your network.
+    },
+    polygon: {
+      apiKey: polygonMainnetAlchemyAPIKey, // Replace with your Alchemy API Key.
+      network: Network.MATIC_MAINNET, // Replace with your network.
     }
   }
 
@@ -40,6 +44,8 @@ export default async function handler(
       settings = settingsMap.goerli;
     } else if (chainType === 'mumbai') {
       settings = settingsMap.mumbai
+    } else if (chainType == 'polygon') {
+      settings = settingsMap.polygon
     }
   
     const alchemy = new Alchemy(settings);

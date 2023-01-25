@@ -49,6 +49,8 @@ const ListAllERC20: FC<Props> = (data) => {
     chainType = 'goerli'
   } else if (chainId == '0x13881') {
     chainType = 'mumbai'
+  } else if (chainId == '0x89') {
+    chainType = 'polygon'
   }
   const defaultAtta: ERC20TokenResponse[] = []
   const [tokenData, setTokenData] = useState(defaultAtta)

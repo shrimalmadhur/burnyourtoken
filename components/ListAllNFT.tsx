@@ -25,6 +25,8 @@ const ListAllNFT: FC<Props> = (data) => {
     chainType = 'goerli'
   } else if (chainId == '0x13881') {
     chainType = 'mumbai'
+  } else if (chainId == '0x89') {
+    chainType = 'polygon'
   }
   const defaultAtta: TokenResponse[] = []
   const [nftData, setNftData] = useState(defaultAtta)
